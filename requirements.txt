@@ -1,0 +1,10 @@
+flask
+gunicorn
+torch
+torchvision
+numpy
+opencv-python-headless
+scikit-learn
+joblib
+requests
+google-generativeai

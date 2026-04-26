@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Plant Care Dashboard</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Roboto,Arial,sans-serif;
+background:#0f1115;
+color:#e8eaed;
+padding:24px;
+}
+
+.container{
+max-width:1180px;
+margin:auto;
+}
+
+/* TOP BAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+margin-bottom:22px;
+}
+
+.brand{
+font-size:30px;
+font-weight:600;
+letter-spacing:.2px;
+color:#e8eaed;
+}
+
+.brand .dot1{
+color:#0054db;
+}
+
+.sub{
+font-size:13px;
+color:#9aa0a6;
+margin-top:4px;
+}
+
+.actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+input[type="file"]{
+background:#191e29;
+color:#9aa0a6;
+border:1px solid #3c4043;
+padding:10px;
+border-radius:999px;
+font-size:14px;
+max-width:230px;
+}
+
+button{
+border:none;
+padding:12px 22px;
+border-radius:999px;
+font-size:15px;
+font-weight:500;
+cursor:pointer;
+transition:.2s ease;
+}
+
+button:hover{
+transform:translateY(-1px);
+box-shadow:0 8px 18px rgba(0,0,0,.25);
+}
+
+.btn1{
+background:#6b9ff1;
+color:#0f1115;
+}
+
+.btn2{
+background:#191e29;
+color:#6b9ff1;
+border:1px solid #3c4043;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:1.15fr .85fr;
+gap:20px;
+}
+
+/* CARDS */
+.card{
+background:#1a1c22;
+border:1px solid #2d3139;
+border-radius:26px;
+padding:22px;
+box-shadow:0 1px 2px rgba(0,0,0,.2);
+}
+
+.card-title{
+font-size:18px;
+font-weight:600;
+color:#e8eaed;
+margin-bottom:16px;
+}
+
+/* IMAGE */
+.image-wrap{
+text-align:center;
+}
+
+img{
+width:100%;
+max-height:470px;
+object-fit:cover;
+border-radius:22px;
+display:none;
+background:#202124;
+}
+
+/* RESULT */
+.result-box{
+margin-top:18px;
+padding:18px;
+background:#202124;
+border-radius:20px;
+border:1px solid #2d3139;
+}
+
+.result-main{
+font-size:28px;
+font-weight:600;
+margin-bottom:6px;
+word-break:break-word;
+}
+
+.result-sub{
+font-size:13px;
+color:#9aa0a6;
+}
+
+/* METRICS */
+.metrics{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.metric{
+background:#202124;
+border-radius:20px;
+padding:18px;
+border:1px solid #2d3139;
+}
+
+.metric-label{
+font-size:13px;
+color:#9aa0a6;
+margin-bottom:8px;
+}
+
+.metric-value{
+font-size:28px;
+font-weight:600;
+}
+
+.blue{color:#8ab4f8;}
+.green{color:#81c995;}
+.red{color:#09ff00;}
+.yellow{color:#fdd663;}
+
+/* INSIGHTS */
+#advice{
+margin-top:4px;
+}
+
+.ai-card{
+background:#202124;
+border-radius:22px;
+padding:18px;
+border:1px solid #2d3139;
+}
+
+.ai-head{
+font-size:20px;
+font-weight:600;
+margin-bottom:14px;
+color:#8ab4f8;
+}
+
+.section{
+background:#17191e;
+border:1px solid #2d3139;
+border-radius:18px;
+padding:16px;
+margin-bottom:12px;
+}
+
+.section h3{
+font-size:16px;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.section p{
+font-size:15px;
+line-height:1.65;
+color:#d2d5da;
+}
+
+.loading{
+padding:20px;
+text-align:center;
+color:#9aa0a6;
+}
+
+.footer{
+margin-top:18px;
+text-align:center;
+font-size:13px;
+color:#9aa0a6;
+}
+
+/* MOBILE */
+@media(max-width:950px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:640px){
+
+body{
+padding:14px;
+}
+
+.brand{
+font-size:24px;
+}
+
+.actions{
+width:100%;
+flex-direction:column;
+align-items:stretch;
+}
+
+button,
+input[type="file"]{
+width:100%;
+max-width:100%;
+}
+
+.metrics{
+grid-template-columns:1fr;
+}
+
+.result-main{
+font-size:22px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+<div>
+<div class="brand">
+<span class="dot1">Smart PlantCare</span>
+</div>
+<div class="sub">Intelligent crop monitoring dashboard</div>
+</div>
+
+<div class="actions">
+<input type="file" id="fileInput" accept="image/*">
+<button class="btn1" onclick="capture()">Upload & Predict</button>
+<button class="btn2" onclick="getAdvice()">Get AI Advice</button>
+</div>
+
+</div>
+
+<div class="grid">
+
+<!-- LEFT -->
+<div class="card">
+
+<div class="card-title">Uploaded Plant Image</div>
+
+<div class="image-wrap">
+<img id="photo">
+</div>
+
+<div class="result-box">
+<div class="result-main" id="result">Awaiting image upload...</div>
+<div class="result-sub">Plant health detection status</div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div>
+
+<div class="card" style="margin-bottom:20px;">
+
+<div class="card-title">Environment Metrics</div>
+
+<div class="metrics">
+
+<div class="metric">
+<div class="metric-label">Temperature</div>
+<div class="metric-value blue" id="temp">-- °C</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">Humidity</div>
+<div class="metric-value green" id="hum">-- %</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">System</div>
+<div class="metric-value red">Online</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">Engine</div>
+<div class="metric-value yellow">Ready</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">Smart Insights</div>
+
+<div id="advice"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+Smart Plant Care • AswanthRM
+</div>
+
+</div>
+
+<script>
+async function capture(){
+
+let file = document.getElementById("fileInput").files[0];
+
+if(!file){
+alert("Choose image first");
+return;
+}
+
+document.getElementById("result").innerHTML = "Uploading image...";
+document.getElementById("advice").innerHTML = "";
+document.getElementById("photo").style.display = "none";
+
+let formData = new FormData();
+formData.append("image", file);
+
+let res = await fetch("/capture", {
+method: "POST",
+body: formData
+});
+
+let data = await res.json();
+
+if(data.error){
+document.getElementById("result").innerHTML = data.error;
+return;
+}
+
+document.getElementById("photo").src =
+"data:image/jpeg;base64," + data.image;
+
+document.getElementById("photo").style.display = "block";
+
+document.getElementById("result").innerHTML =
+data.prediction + " (" + data.confidence + "%)";
+
+document.getElementById("temp").innerHTML =
+data.temperature + " °C";
+
+document.getElementById("hum").innerHTML =
+data.humidity + " %";
+}
+
+async function getAdvice(){
+
+document.getElementById("advice").innerHTML =
+"<div class='loading'>Generating insights...</div>";
+
+let res = await fetch("/advice");
+let data = await res.json();
+
+if(data.error){
+document.getElementById("advice").innerHTML = data.error;
+return;
+}
+
+let txt = data.advice.replace(/\*\*/g,"").trim();
+
+let cause = "";
+let remedy = "";
+let prevent = "";
+
+let lines = txt.split("\n")
+.map(x => x.trim())
+.filter(x => x);
+
+let mode = "";
+
+for(let line of lines){
+
+let low = line.toLowerCase();
+
+if(low.includes("cause")){
+mode = "cause";
+line = line.replace(/^[0-9.\-\s]*cause:?/i,"").trim();
+if(line) cause += line + " ";
+continue;
+}
+
+if(low.includes("immediate remedy") || low.includes("remedy")){
+mode = "remedy";
+line = line.replace(/^[0-9.\-\s]*(immediate remedy|remedy):?/i,"").trim();
+if(line) remedy += line + " ";
+continue;
+}
+
+if(low.includes("prevention")){
+mode = "prevent";
+line = line.replace(/^[0-9.\-\s]*prevention:?/i,"").trim();
+if(line) prevent += line + " ";
+continue;
+}
+
+if(mode === "cause") cause += line + " ";
+if(mode === "remedy") remedy += line + " ";
+if(mode === "prevent") prevent += line + " ";
+}
+
+if(!cause) cause = "No cause details generated.";
+if(!remedy) remedy = "No immediate remedy generated.";
+if(!prevent) prevent = "No prevention guidance generated.";
+
+document.getElementById("advice").innerHTML = `
+<div class="ai-card">
+
+<div class="ai-head">Action Plan</div>
+
+<div class="section">
+<h3 style="color:#f28b82;">Cause</h3>
+<p>${cause}</p>
+</div>
+
+<div class="section">
+<h3 style="color:#fdd663;">Immediate Remedy</h3>
+<p>${remedy}</p>
+</div>
+
+<div class="section">
+<h3 style="color:#81c995;">Prevention</h3>
+<p>${prevent}</p>
+</div>
+
+</div>
+`;
+}
+</script>
+
+</body>
+</html>

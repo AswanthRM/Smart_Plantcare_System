@@ -1,0 +1,510 @@
+<!	html  3 like openAI dashboard>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Smart Plant Care Dashboard</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+:root{
+--bg:#0b0d0f;
+--panel:#111417;
+--panel2:#171b1f;
+--border:#252b31;
+--text:#f5f5f5;
+--muted:#9aa0a6;
+--green:#10a37f;
+--green2:#19c38a;
+--blue:#6ea8ff;
+--yellow:#f7c948;
+--red:#ff6b6b;
+}
+
+body{
+font-family:Inter,Segoe UI,Arial,sans-serif;
+background:
+radial-gradient(circle at top left,#0f1418 0%,#0b0d0f 55%),
+#0b0d0f;
+color:var(--text);
+padding:24px;
+}
+
+.container{
+max-width:1320px;
+margin:auto;
+}
+
+/* TOP BAR */
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:26px;
+}
+
+.brand-wrap{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.logo{
+width:44px;
+height:44px;
+border-radius:14px;
+background:linear-gradient(135deg,var(--green),#0f6);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+font-size:20px;
+color:#08120f;
+box-shadow:0 8px 24px rgba(16,163,127,.25);
+}
+
+.brand{
+font-size:28px;
+font-weight:700;
+letter-spacing:-0.4px;
+}
+
+.sub{
+font-size:13px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+button{
+border:none;
+padding:13px 22px;
+border-radius:14px;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+transition:.18s ease;
+}
+
+button:hover{
+transform:translateY(-1px);
+}
+
+.btn1{
+background:var(--green);
+color:white;
+box-shadow:0 10px 24px rgba(16,163,127,.22);
+}
+
+.btn2{
+background:#1a1f24;
+color:#fff;
+border:1px solid var(--border);
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:1.2fr .8fr;
+gap:22px;
+}
+
+/* CARDS */
+
+.card{
+background:linear-gradient(180deg,var(--panel),var(--panel2));
+border:1px solid var(--border);
+border-radius:24px;
+padding:22px;
+backdrop-filter:blur(8px);
+}
+
+.card-title{
+font-size:16px;
+font-weight:700;
+margin-bottom:16px;
+color:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.badge{
+font-size:11px;
+padding:6px 10px;
+border-radius:999px;
+background:rgba(16,163,127,.14);
+color:#7ff0c4;
+border:1px solid rgba(16,163,127,.18);
+}
+
+/* IMAGE */
+
+.image-wrap{
+background:#0c1013;
+border:1px solid var(--border);
+border-radius:20px;
+padding:12px;
+min-height:420px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+img{
+width:100%;
+max-height:400px;
+object-fit:cover;
+border-radius:16px;
+display:none;
+}
+
+/* RESULT */
+
+.result-box{
+margin-top:18px;
+padding:18px;
+border-radius:20px;
+background:#0d1114;
+border:1px solid var(--border);
+}
+
+.result-main{
+font-size:28px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.result-sub{
+font-size:13px;
+color:var(--muted);
+}
+
+/* METRICS */
+
+.metrics{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.metric{
+padding:18px;
+border-radius:18px;
+background:#0d1114;
+border:1px solid var(--border);
+}
+
+.metric-label{
+font-size:12px;
+color:var(--muted);
+margin-bottom:8px;
+text-transform:uppercase;
+letter-spacing:.8px;
+}
+
+.metric-value{
+font-size:28px;
+font-weight:700;
+}
+
+.green{color:var(--green2);}
+.blue{color:var(--blue);}
+.red{color:var(--red);}
+.yellow{color:var(--yellow);}
+
+/* AI INSIGHTS */
+
+.ai-card{
+background:#0d1114;
+border:1px solid var(--border);
+border-radius:22px;
+padding:18px;
+}
+
+.ai-head{
+font-size:20px;
+font-weight:700;
+margin-bottom:14px;
+color:#fff;
+}
+
+.section{
+background:#11161a;
+border:1px solid var(--border);
+border-radius:18px;
+padding:16px;
+margin-bottom:12px;
+}
+
+.section h3{
+font-size:15px;
+margin-bottom:8px;
+}
+
+.section p{
+font-size:15px;
+line-height:1.7;
+color:#d6d8da;
+}
+
+.loading{
+padding:18px;
+text-align:center;
+color:var(--muted);
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:18px;
+text-align:center;
+font-size:13px;
+color:var(--muted);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:980px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:640px){
+
+body{
+padding:14px;
+}
+
+.brand{
+font-size:22px;
+}
+
+.actions{
+width:100%;
+flex-direction:column;
+}
+
+button{
+width:100%;
+}
+
+.metrics{
+grid-template-columns:1fr;
+}
+
+.result-main{
+font-size:22px;
+}
+
+.image-wrap{
+min-height:260px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- TOP BAR -->
+<div class="topbar">
+
+<div class="brand-wrap">
+<div class="logo">◎</div>
+
+<div>
+<div class="brand">Smart Plant Care</div>
+<div class="sub">AI ecosystem dashboard for intelligent crop monitoring</div>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn1" onclick="capture()">Capture & Predict</button>
+<button class="btn2" onclick="getAdvice()">Generate Insights</button>
+</div>
+
+</div>
+
+<!-- MAIN GRID -->
+<div class="grid">
+
+<!-- LEFT -->
+<div class="card">
+
+<div class="card-title">
+<span>Vision Analysis</span>
+<span class="badge">Realtime</span>
+</div>
+
+<div class="image-wrap">
+<img id="photo">
+</div>
+
+<div class="result-box">
+<div class="result-main" id="result">Awaiting capture...</div>
+<div class="result-sub">Disease classification engine status</div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div>
+
+<div class="card" style="margin-bottom:22px;">
+
+<div class="card-title">
+<span>System Metrics</span>
+<span class="badge">Online</span>
+</div>
+
+<div class="metrics">
+
+<div class="metric">
+<div class="metric-label">Temperature</div>
+<div class="metric-value blue" id="temp">-- °C</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">Humidity</div>
+<div class="metric-value green" id="hum">-- %</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">Camera Node</div>
+<div class="metric-value red">Ready</div>
+</div>
+
+<div class="metric">
+<div class="metric-label">Inference</div>
+<div class="metric-value yellow">Active</div>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<span>AI Recommendations</span>
+<span class="badge">GPT</span>
+</div>
+
+<div id="advice"></div>
+
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+Smart Plant Care • Built by AswanthRM
+</div>
+
+</div>
+
+<script>
+async function capture(){
+
+document.getElementById("result").innerHTML="Capturing image...";
+document.getElementById("advice").innerHTML="";
+document.getElementById("photo").style.display="none";
+
+let res = await fetch("/capture");
+let data = await res.json();
+
+if(data.error){
+document.getElementById("result").innerHTML=data.error;
+return;
+}
+
+document.getElementById("photo").src =
+"data:image/jpeg;base64," + data.image;
+
+document.getElementById("photo").style.display="block";
+
+document.getElementById("result").innerHTML =
+data.prediction + " (" + data.confidence + "%)";
+
+document.getElementById("temp").innerHTML =
+data.temperature + " °C";
+
+document.getElementById("hum").innerHTML =
+data.humidity + " %";
+}
+
+async function getAdvice(){
+
+document.getElementById("advice").innerHTML =
+"<div class='loading'>Generating recommendations...</div>";
+
+let res = await fetch("/advice");
+let data = await res.json();
+
+if(data.error){
+document.getElementById("advice").innerHTML=data.error;
+return;
+}
+
+let txt = data.advice.replace(/\*\*/g,"");
+
+let cause="", remedy="", prevent="";
+let lines = txt.split("\n");
+
+for(let line of lines){
+
+if(line.toLowerCase().includes("cause")){
+cause = line.replace(/1\. Cause:?/i,"").trim();
+}
+else if(line.toLowerCase().includes("immediate remedy")){
+remedy = line.replace(/2\. Immediate remedy:?/i,"").trim();
+}
+else if(line.toLowerCase().includes("prevention")){
+prevent = line.replace(/3\. Prevention:?/i,"").trim();
+}
+}
+
+document.getElementById("advice").innerHTML = `
+<div class="ai-card">
+
+<div class="ai-head">Action Plan</div>
+
+<div class="section">
+<h3 style="color:#ff8e8e;">Cause</h3>
+<p>${cause}</p>
+</div>
+
+<div class="section">
+<h3 style="color:#f7c948;">Immediate Remedy</h3>
+<p>${remedy}</p>
+</div>
+
+<div class="section">
+<h3 style="color:#19c38a;">Prevention</h3>
+<p>${prevent}</p>
+</div>
+
+</div>
+`;
+}
+</script>
+
+</body>
+</html>
